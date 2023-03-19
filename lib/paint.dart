@@ -1,6 +1,7 @@
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
+import 'package:collection/collection.dart';
 
 class MyPaint extends StatefulWidget {
   const MyPaint(this.setParentImg, {super.key});
@@ -45,7 +46,6 @@ class _MyPaintState extends State<MyPaint> {
 
     void onPanEnd(DragEndDetails details) {
       debugPrint('User ended drawing');
-      // debugPrint(lines.last.toString());
     }
 
     return Column(
@@ -63,7 +63,6 @@ class _MyPaintState extends State<MyPaint> {
                 child: CustomPaint(
                   painter: MyCustomPainter(lines),
                   size: const Size(224, 224),
-                  // child: const SizedBox(width: 224, height: 224),
                 ),
               ),
             )),
@@ -87,13 +86,14 @@ class MyCustomPainter extends CustomPainter {
   // List<Path> lines;
 
   MyCustomPainter(this.lines) : super();
+  Function eq = const DeepCollectionEquality().equals;
 
   @override
   void paint(Canvas canvas, Size size) {
     canvas.drawColor(Colors.white, BlendMode.src);
     Paint paint = Paint()
       ..color = Colors.black
-      ..strokeWidth = 6
+      ..strokeWidth = 5
       ..strokeCap = StrokeCap.round;
 
     for (var line in lines) {
@@ -103,10 +103,6 @@ class MyCustomPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(MyCustomPainter oldDelegate) {
-    return true;
-    // ){
-
-    // }
-    // return true;
+    return !eq(lines, oldDelegate.lines);
   }
 }
