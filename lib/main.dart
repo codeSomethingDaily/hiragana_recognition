@@ -1,5 +1,8 @@
+// import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_pytorch_hiragana/flutter_pytorch_hiragana.dart';
+// import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:hiragana_recognition/paint.dart';
 
 import 'dart:ui' as ui;
@@ -17,6 +20,7 @@ Future<img.Image> convertFlutterUiToImage(ui.Image uiImage) async {
 }
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
@@ -40,7 +44,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'Hiragana classifier'),
     );
   }
 }
@@ -67,6 +71,8 @@ class _MyHomePageState extends State<MyHomePage> {
   ui.Image? im;
   final hiragana = FlutterPytorchHiragana();
   String predicted = "";
+  String googlePredicted = "";
+  // final textRecognizer = TextRecognizer(script: TextRecognitionScript.japanese);
 
   @override
   void initState() {
@@ -82,16 +88,26 @@ class _MyHomePageState extends State<MyHomePage> {
       // final directory = await getApplicationDocumentsDirectory();
       final directory = await getExternalStorageDirectory();
       final bmpPath = p.join(directory!.path, "image.bmp");
-      debugPrint(bmpPath);
+      // debugPrint(bmpPath);
       // img.encodePngFile(pngPath, imgim);
       img.encodeBmpFile(bmpPath, imgim);
 
-      final test = await hiragana.predictProbability(imgim);
-      debugPrint(test.toString());
+      // final test = await hiragana.predictProbability(imgim);
+      // debugPrint(test.toString());
       final res = await hiragana.predictHiragana(imgim);
       if (mounted) {
         setState(() {
           predicted = res;
+        });
+      }
+      // final f = File(bmpPath);
+      // final inputImage = InputImage.fromFile(f);
+      // final recognizedText = await textRecognizer.processImage(inputImage);
+
+      // final String text = recognizedText.text;
+      if (mounted) {
+        setState(() {
+          // googlePredicted = text;
         });
       }
     }
@@ -129,11 +145,8 @@ class _MyHomePageState extends State<MyHomePage> {
             ElevatedButton(
                 onPressed: onPredictButtonPressed,
                 child: const Text("predict")),
-            if (im != null)
-              RawImage(
-                image: im,
-              ),
             Text(predicted),
+            Text(googlePredicted),
           ],
         ),
       ),

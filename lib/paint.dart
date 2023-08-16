@@ -44,8 +44,9 @@ class _MyPaintState extends State<MyPaint> {
       }
     }
 
-    void onPanEnd(DragEndDetails details) {
+    void onPanEnd(DragEndDetails details) async {
       debugPrint('User ended drawing');
+      widget.setParentImg(await rendered);
     }
 
     return Column(
@@ -71,11 +72,11 @@ class _MyPaintState extends State<MyPaint> {
               lines.clear();
             },
             child: const Text('clear')),
-        ElevatedButton(
-            onPressed: () async {
-              widget.setParentImg(await rendered);
-            },
-            child: const Text("test")),
+        //   ElevatedButton(
+        //       onPressed: () async {
+        //         widget.setParentImg(await rendered);
+        //       },
+        //       child: const Text("test")),
       ],
     );
   }
@@ -103,6 +104,7 @@ class MyCustomPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(MyCustomPainter oldDelegate) {
-    return !eq(lines, oldDelegate.lines);
+    // return !eq(lines, oldDelegate.lines);
+    return true;
   }
 }
