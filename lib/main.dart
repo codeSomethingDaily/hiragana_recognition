@@ -1,8 +1,5 @@
-// import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_pytorch_hiragana/flutter_pytorch_hiragana.dart';
-// import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:hiragana_recognition/paint.dart';
 
 import 'dart:ui' as ui;
@@ -52,15 +49,6 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
   final String title;
 
   @override
@@ -72,18 +60,16 @@ class _MyHomePageState extends State<MyHomePage> {
   final hiragana = FlutterPytorchHiragana();
   String predicted = "";
   String googlePredicted = "";
-  // final textRecognizer = TextRecognizer(script: TextRecognitionScript.japanese);
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     hiragana.initModel();
   }
 
   void onPredictButtonPressed() async {
     if (im != null) {
-      // img!.toByteData( )
+      // img!.toByteData()
       img.Image imgim = await convertFlutterUiToImage(im!);
       // final directory = await getApplicationDocumentsDirectory();
       final directory = await getExternalStorageDirectory();
@@ -98,16 +84,6 @@ class _MyHomePageState extends State<MyHomePage> {
       if (mounted) {
         setState(() {
           predicted = res;
-        });
-      }
-      // final f = File(bmpPath);
-      // final inputImage = InputImage.fromFile(f);
-      // final recognizedText = await textRecognizer.processImage(inputImage);
-
-      // final String text = recognizedText.text;
-      if (mounted) {
-        setState(() {
-          // googlePredicted = text;
         });
       }
     }
